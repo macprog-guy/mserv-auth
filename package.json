@@ -1,0 +1,44 @@
+{
+  "name": "mserv-auth",
+  "version": "0.2.0",
+  "description": "Middleware that allows the message auth to contain arbitrary values.",
+  "keywords": [
+    "npm",
+    "mserv", 
+    "middleware",
+    "auth",
+    "authentication",
+    "authorization",
+    "scope"
+  ],
+  "homepage": "https://github.com/macprog-guy/mserv-auth",
+  "main": "./auth.js",
+  "scripts": {
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha -R spec --harmony -t 5000 -u bdd ./test.js"
+  },
+  "author": {
+    "name": "Eric Methot",
+    "email": "eric@macprog.com",
+    "url": "https://github.com/macprog-guy/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/macprog-guy/mserv-auth.git"
+  },
+  "bugs": {
+    "url": "http://github.com/macprog-guy/mserv-auth/issues"
+  },
+  "license": "MIT",
+  "peerDeependencies": {
+    "mserv": "^0.2.0"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "co": "^4.6.0",
+    "mocha": "^2.2.5",
+    "mserv": "^0.2.0"
+  },
+  "dependencies": {
+    "lodash": "^3.10.1"
+  }
+}

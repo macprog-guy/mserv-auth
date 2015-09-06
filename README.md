@@ -84,3 +84,31 @@ service.ext.auth('apikey', custom, {
 ```
 
 
+# Authorization
+
+There are many ways to specify authentication and authorization at the action level. 
+Here are some examples:
+
+- `auth: false` no authentication needed.
+- `auth: true` authentication needed no authorization rules are applied.
+- `auth: 'root'` authentication needed and root scope required.
+- `auth: ['root','delegate']` authentication needed root or delegate scope required.
+- `auth: {scheme:['basic','jwt'], scope:'root'}` authentication on basic or jwt scheme and root scope required.
+
+So for an action to require authentication on any scheme and require root scope we could write this:
+
+```js
+
+service.action({
+	name: 'foo',
+	auth: 'root'
+	handler: function*(){
+		// Do some foo
+	}
+})
+
+```
+
+
+
+

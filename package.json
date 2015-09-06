@@ -1,7 +1,7 @@
 {
   "name": "mserv-auth",
   "version": "0.2.0",
-  "description": "Middleware that allows the message auth to contain arbitrary values.",
+  "description": "Middleware that provides authentication to microservices.",
   "keywords": [
     "npm",
     "mserv", 

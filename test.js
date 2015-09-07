@@ -7,7 +7,8 @@ var auth    = require('.'),
 	basic   = require('./basic'),
 	co      = require('co'),
 	chai    = require('chai'),
-	should  = chai.should()
+	should  = chai.should(),
+	_       = require('lodash')
 
 
 // ----------------------------------------------------------------------------
@@ -104,29 +105,56 @@ describe("mserv-auth/custom", function(){
 
 
 	it('should not execute the action and return notSpecified', wrappedTest(function*(){
-		let result = yield service.invoke('private')
-		result.should.eql({
-			status:'unauthorized',
-			reason:'missing'
-		})
+		try {
+			yield service.invoke('private')
+			throw new Error('mserv-auth did not throw')
+		}
+		catch(err) {
+			if (err.message === 'mserv-auth did not throw')
+				throw err
+
+			_.pick(err, 'name','message','reason').should.eql({
+				name:'Error',
+				message:'unauthorized',
+				reason:'missing'
+			})
+		}
 	}))
 
 
 	it('should not execute the action and return schemeNotImplemented', wrappedTest(function*(){
-		let result = yield service.invoke('schemeNotImplemented',{}, helpers.authorization('Foo','toto'))
-		result.should.eql({
-			status:'unauthorized',
-			reason:'notImplemented'
-		})
+		try {
+			yield service.invoke('schemeNotImplemented',{}, helpers.authorization('Foo','toto'))
+			throw new Error('mserv-auth did not throw')
+		}
+		catch(err) {
+			if (err.message === 'mserv-auth did not throw')
+				throw err
+
+			_.pick(err, 'name','message','reason').should.eql({
+				name:'Error',
+				message:'unauthorized',
+				reason:'notImplemented'
+			})
+		}
 	}))
 
 
 	it('should not execute the action and return unauthorized', wrappedTest(function*(){
-		let result = yield service.invoke('private',{},helpers.authorization('Test'))
-		result.should.eql({
-			status:'unauthorized',
-			reason:'unauthorized'
-		})
+		try {
+			yield service.invoke('private',{},helpers.authorization('Test'))
+			throw new Error('mserv-auth did not throw')
+		}
+		catch(err) {
+			if (err.message === 'mserv-auth did not throw')
+				throw err
+
+			_.pick(err, 'name','message','reason').should.eql({
+				name:'Error',
+				message:'unauthorized',
+				reason:'unauthorized'
+			})
+		}
 	}))
 
 
@@ -193,11 +221,20 @@ describe("mserv-auth/basic", function(){
 
 	it('should not execute the action and return unauthorized', wrappedTest(function*(){
 		let headers = helpers.authorization('Basic','eric','wrong')
-		let result = yield service.invoke('private',null, headers)
-		result.should.eql({
-			status:'unauthorized',
-			reason:'unauthorized'
-		})
+		try {
+			yield service.invoke('private',null, headers)
+			throw new Error('mserv-auth did not throw')
+		}
+		catch(err) {
+			if (err.message === 'mserv-auth did not throw')
+				throw err
+
+			_.pick(err, 'name','message','reason').should.eql({
+				name:'Error',
+				message:'unauthorized',
+				reason:'unauthorized'
+			})
+		}
 	}))
 })
 

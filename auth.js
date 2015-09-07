@@ -20,12 +20,15 @@ module.exports = function(service, globalOptions) {
 		}
 	})
 
-	// Unauthorized should be a plain function returning a response. The result
-	// is assigned to this.res. It will receive one of the following The following 
-	// two parameters: reason, header.
+	// Unauthorized should be a plain function returning a response or throwing. 
+	// The result is assigned to this.res if it does not throw. 
 
 	let unauthorized = globalOptions.unauthorized || function(reason, header) {
-		return {status:'unauthorized', reason}
+		let err = new Error('unauthorized')
+		err.source = 'mserv-auth'
+		err.header = header
+		err.reason = reason
+		throw err
 	}
 
 

@@ -113,10 +113,12 @@ describe("mserv-auth/custom", function(){
 			if (err.message === 'mserv-auth did not throw')
 				throw err
 
-			_.pick(err, 'name','message','reason').should.eql({
+			_.pick(err, 'name','message','status','code','WWW-Authenticate').should.eql({
 				name:'Error',
-				message:'unauthorized',
-				reason:'missing'
+				message:'Unauthorized',
+				status: 'Unauthorized',
+				code: 401,
+				'WWW-Authenticate': 'Test'
 			})
 		}
 	}))
@@ -131,10 +133,12 @@ describe("mserv-auth/custom", function(){
 			if (err.message === 'mserv-auth did not throw')
 				throw err
 
-			_.pick(err, 'name','message','reason').should.eql({
+			_.pick(err, 'name','message','status','code','WWW-Authenticate').should.eql({
 				name:'Error',
-				message:'unauthorized',
-				reason:'notImplemented'
+				message:'Unauthorized',
+				status: 'Unauthorized',
+				code: 401,
+				'WWW-Authenticate': 'Test'
 			})
 		}
 	}))
@@ -149,10 +153,12 @@ describe("mserv-auth/custom", function(){
 			if (err.message === 'mserv-auth did not throw')
 				throw err
 
-			_.pick(err, 'name','message','reason').should.eql({
+			_.pick(err, 'name','message','status','code','WWW-Authenticate').should.eql({
 				name:'Error',
-				message:'unauthorized',
-				reason:'unauthorized'
+				message:'Unauthorized',
+				status: 'Unauthorized',
+				code: 401,
+				'WWW-Authenticate': 'Test'
 			})
 		}
 	}))
@@ -229,10 +235,12 @@ describe("mserv-auth/basic", function(){
 			if (err.message === 'mserv-auth did not throw')
 				throw err
 
-			_.pick(err, 'name','message','reason').should.eql({
+			_.pick(err, 'name','message','status','code','WWW-Authenticate').should.eql({
 				name:'Error',
-				message:'unauthorized',
-				reason:'unauthorized'
+				message:'Unauthorized',
+				status: 'Unauthorized',
+				code: 401,
+				'WWW-Authenticate': 'Basic'
 			})
 		}
 	}))

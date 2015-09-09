@@ -23,11 +23,23 @@ module.exports = function(service, globalOptions) {
 	// Unauthorized should be a plain function returning a response or throwing. 
 	// The result is assigned to this.res if it does not throw. 
 
-	let unauthorized = globalOptions.unauthorized || function(reason, header) {
-		let err = new Error('unauthorized')
+	let unauthorized = globalOptions.unauthorized || function(code, scheme) {
+		
+		let status = 'Unauthorized',
+			challenge = _.capitalize(Object.keys(schemes)[0])
+		
+		switch(code) {
+			case 400: status = 'Bad Request';  break;
+			case 401: status = 'Unauthorized'; break;
+			case 403: status = 'Forbidden';    break;
+		}
+
+		let err = new Error(status)
 		err.source = 'mserv-auth'
-		err.header = header
-		err.reason = reason
+		err.status = status
+		err.code   = code
+		err['WWW-Authenticate'] = (scheme === undefined) && _.capitalize(scheme) || challenge
+
 		throw err
 	}
 
@@ -68,7 +80,7 @@ module.exports = function(service, globalOptions) {
 
 			// Check that we have an authorization header
 			if (!this.headers$.authorization)
-				return this.res = unauthorized('missing', '')
+				return this.res = unauthorized(401)
 
 			// Get the authorization header (same format as an HTTP authorization header)
 			// It's origin will often be an HTTP request of some kind.
@@ -81,21 +93,21 @@ module.exports = function(service, globalOptions) {
 			// Get the plugin for that scheme and make sure it's a function
 			let plugin = schemes[scheme]
 			if (!plugin || typeof plugin !== 'function')
-				return this.res = unauthorized('notImplemented', header)
+				return this.res = unauthorized(401)
 
 
 			credentials = yield plugin(data, options)
 
 			// Call the plugin to handle the details
 			if (!credentials)
-				return this.res = unauthorized('unauthorized', header)
+				return this.res = unauthorized(401,scheme)
 
 			// If the action specifies a scope then apply it
 			if (actionScope && actionScope.length > 0) {
 		
 				// If the credentials have no scope then boom!
 				if (!credentials.scope)
-					return this.res = unauthorized('forbidden', header)
+					return this.res = unauthorized(403, scheme)
 
 				// Normalize the credentials scope to an array
 				if (! Array.isArray(credentials.scope))
@@ -103,7 +115,7 @@ module.exports = function(service, globalOptions) {
 
 				// If any of the users scopes match the scopes of the action then it a GO
 				if (_.intersection(actionScope, credentials.scope).length === 0)
-					return this.res = unauthorized('forbidden', header)
+					return this.res = unauthorized(403, scheme)
 			}
 
 			this.auth$ = {credentials}

@@ -79,7 +79,7 @@ module.exports = function(service, globalOptions) {
 		if (actionSchemes) {
 
 			// Check that we have an authorization header
-			if (!this.headers$.authorization)
+			if (!(this.headers$ && this.headers$.authorization && typeof this.headers$.authorization === 'string'))
 				return this.res = unauthorized(401)
 
 			// Get the authorization header (same format as an HTTP authorization header)

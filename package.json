@@ -1,10 +1,10 @@
 {
   "name": "mserv-auth",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Middleware that provides authentication to microservices.",
   "keywords": [
     "npm",
-    "mserv", 
+    "mserv",
     "middleware",
     "auth",
     "authentication",
@@ -36,7 +36,7 @@
     "chai": "^3.2.0",
     "co": "^4.6.0",
     "mocha": "^2.2.5",
-    "mserv": "^0.2.0"
+    "mserv": "^0.2.13"
   },
   "dependencies": {
     "lodash": "^3.10.1"
